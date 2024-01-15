@@ -11,5 +11,10 @@
   },
   "author": "Patryk Piotrowski",
   "license": "MIT",
-  "description": ""
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xdellta/UserHUB/tree/main/backend"
+  },
+  "description": "The project is educational in nature. UserHUB is a web application that supports the user's basic system based on frontend and backend."
 }

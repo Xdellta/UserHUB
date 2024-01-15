@@ -26,7 +26,11 @@
     "vue-tsc": "^1.8.25"
   },
   "description": "The project is educational in nature. UserHUB is a web application that supports the user's basic system based on frontend and backend.",
-  "main": "index.html",
+  "main": "main.ts",
   "author": "Patryk Piotrowski",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xdellta/UserHUB/tree/main/frontend"
+  }
 }
