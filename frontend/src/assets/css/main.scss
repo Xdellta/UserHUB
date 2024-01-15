@@ -1,0 +1,15 @@
+@import './base.scss';
+@import './AuthForm.scss';
+
+#app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 1240px) {
+  #app {
+    flex-direction: column;
+  }
+}
