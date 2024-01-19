@@ -1,25 +1,21 @@
 <script setup lang="ts">
-  import { defineProps, ref } from 'vue';
+  import { defineProps, defineEmits } from 'vue';
   import UserIcon from '@/assets/icons/UserIcon.vue';
   import LockIcon from '@/assets/icons/LockIcon.vue';
   import ShowIcon from '@/assets/icons/ShowIcon.vue';
 
-  const { label, iconName, inputType, inputPlaceholder } = defineProps(['label', 'iconName', 'inputType', 'inputPlaceholder']);
-
+  const { label, iconName, inputType, inputPlaceholder, modelValue } = defineProps(['label', 'iconName', 'inputType', 'inputPlaceholder', 'modelValue']);
   const icons: Record<string, any> = { UserIcon, LockIcon, ShowIcon };
 
-  const inputValue = ref('');
-
-  const handleInput = (event: Event) => {
-    inputValue.value = (event.target as HTMLInputElement).value;
-  };
+  const emit = defineEmits();
+  const updateModelValue = (event: Event) => emit('update:modelValue', (event.target as HTMLInputElement).value);
 </script>
 
 <template>
   <label :for="inputType">
     {{ label }}
     <component :is="icons[iconName]" class="icon" />
-    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" v-model="inputValue" @input="handleInput">
+    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" @input="updateModelValue">
   </label>
 </template>
 

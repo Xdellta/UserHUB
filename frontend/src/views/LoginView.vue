@@ -9,25 +9,23 @@
 
   const router = useRouter();
 
-  let authError = ref(false);
-
-  const parentValue = ref('');
+  const authForm = ref({
+    email: '',
+    password: ''
+  });
 
   // Login system
   const login = async () => {
+    try {
+      const response = await axios.post('/login', authForm);
+      const { token } = response.data;
 
-    window.alert(parentValue.value);
+      axios.defaults.headers.common['Authorization'] = `${token}`;
 
-    // try {
-    //   const response = await axios.post('/login', authForm);
-    //   const { token } = response.data;
-
-    //   axios.defaults.headers.common['Authorization'] = `${token}`;
-
-    //   router.push('/');
-    // } catch (error) {
-    //   authError.value = true;
-    // }
+      router.push('/');
+    } catch (error) {
+      console.log('Błąd logowania - frontend')
+    }
   };
 </script>
 
@@ -35,8 +33,8 @@
   <SideBanner />
 
   <form @submit.prevent="login" autocomplete="off" class="authForm">
-    <InputField label="Login" iconName="UserIcon" inputType="email" inputPlaceholder="E-mail" v-model="parentValue" />
-    <InputField label="Hasło" iconName="LockIcon" inputType="password" inputPlaceholder="Hasło do aplikacji" />
+    <InputField label="Login" iconName="UserIcon" inputType="email" inputPlaceholder="E-mail" v-model="authForm.email" />
+    <InputField label="Hasło" iconName="LockIcon" inputType="password" inputPlaceholder="Hasło do aplikacji" v-model="authForm.password" />
 
     <div class="additionalLoginOptions">
       <label for="rememberPass" class="rememberPassLabel font92">
