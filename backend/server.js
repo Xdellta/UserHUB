@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Importowanie tras do obsługi logowania
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./src/routes/auth');
 
 // Parsowanie JSON-a
 app.use(express.json());

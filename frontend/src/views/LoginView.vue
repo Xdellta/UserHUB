@@ -2,14 +2,41 @@
   import SideBanner from '../components/AuthView/SideBanner.vue'
   import InputField from '../components/AuthView/InputField.vue'
   import ConfirmBtn from '../components/AuthView/ConfirmBtn.vue'
+
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import axios from 'axios';
+
+  const router = useRouter();
+
+  let authError = ref(false);
+
+  const parentValue = ref('');
+
+  // Login system
+  const login = async () => {
+
+    window.alert(parentValue.value);
+
+    // try {
+    //   const response = await axios.post('/login', authForm);
+    //   const { token } = response.data;
+
+    //   axios.defaults.headers.common['Authorization'] = `${token}`;
+
+    //   router.push('/');
+    // } catch (error) {
+    //   authError.value = true;
+    // }
+  };
 </script>
 
 <template>
   <SideBanner />
 
-  <form autocomplete="off" class="authForm">
-    <InputField :selectedField="'login'" />
-    <InputField :selectedField="'password'" />
+  <form @submit.prevent="login" autocomplete="off" class="authForm">
+    <InputField label="Login" iconName="UserIcon" inputType="email" inputPlaceholder="E-mail" v-model="parentValue" />
+    <InputField label="Hasło" iconName="LockIcon" inputType="password" inputPlaceholder="Hasło do aplikacji" />
 
     <div class="additionalLoginOptions">
       <label for="rememberPass" class="rememberPassLabel font92">

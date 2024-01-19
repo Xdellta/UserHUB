@@ -1,27 +1,25 @@
 <script setup lang="ts">
-  import { defineProps } from 'vue';
+  import { defineProps, ref } from 'vue';
   import UserIcon from '@/assets/icons/UserIcon.vue';
   import LockIcon from '@/assets/icons/LockIcon.vue';
   import ShowIcon from '@/assets/icons/ShowIcon.vue';
 
-  const { selectedField } = defineProps(['selectedField']);
+  const { label, iconName, inputType, inputPlaceholder } = defineProps(['label', 'iconName', 'inputType', 'inputPlaceholder']);
+
+  const icons: Record<string, any> = { UserIcon, LockIcon, ShowIcon };
+
+  const inputValue = ref('');
+
+  const handleInput = (event: Event) => {
+    inputValue.value = (event.target as HTMLInputElement).value;
+  };
 </script>
 
 <template>
-  <label v-if="selectedField === 'login'" for="login">Login
-    <UserIcon class="icon" />
-    <input type="email" id="login" placeholder="E-mail" required>
-  </label>
-
-  <label v-if="selectedField === 'password'" for="password">Hasło
-    <LockIcon class="icon" />
-    <input type="password" id="password" minlength="6" placeholder="Hasło do aplikacji" required>
-    <ShowIcon class="showPass" />
-  </label>
-
-  <label v-if="selectedField === 'repeatPassword'" for="repeatPassword">Powtórz hasło
-    <LockIcon class="icon" />
-    <input type="password" id="repeatPassword" minlength="6" placeholder="Hasło z górnego pola" required>
+  <label :for="inputType">
+    {{ label }}
+    <component :is="icons[iconName]" class="icon" />
+    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" v-model="inputValue" @input="handleInput">
   </label>
 </template>
 
