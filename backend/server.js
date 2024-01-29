@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 const cors = require('cors');
 
 // Importowanie tras do obsługi autoryzacji
-const authRoutes = require('./src/routes/auth');
+const authRoutes = require('./src/routes/auth.router');
 
 // Parsowanie JSON-a
 app.use(express.json());

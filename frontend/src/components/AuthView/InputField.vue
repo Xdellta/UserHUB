@@ -15,7 +15,7 @@
   <label :for="inputType">
     {{ label }}
     <component :is="icons[iconName]" class="icon" />
-    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" :value="modelValue" @input="updateInputValue">
+    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" :value="modelValue" @input="updateInputValue" minlength="6" required>
   </label>
 </template>
 
@@ -60,6 +60,10 @@
 
   input:focus, input:valid {
     border: 1px solid var(--color-main);
+  }
+
+  .error input {
+    border: 1px solid red;
   }
 
   .showPass {

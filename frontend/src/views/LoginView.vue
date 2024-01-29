@@ -15,19 +15,21 @@
     password: ''
   });
 
+  const hasError = ref(false);
+
   async function login() {
     try {
       const response = await axios.post('/auth/login', authForm.value);
 
       if (response.status === 200) {
         const { token } = response.data;
-        // axios.defaults.headers.common['Authorization'] = `${token}`;
+        axios.defaults.headers.common['Authorization'] = `${token}`;
       }
 
       router.push('/');
       
     } catch (error) {
-      console.error('Błąd logowania: ', error);
+      hasError.value = true;
     }
   }
 </script>
@@ -36,12 +38,13 @@
   <SideBanner />
 
   <form @submit.prevent="login" autocomplete="off" class="authForm">
-    <InputField label="Login" iconName="UserIcon" inputType="email" inputPlaceholder="E-mail" v-model="authForm.email" />
-    <InputField label="Hasło" iconName="LockIcon" inputType="password" inputPlaceholder="Hasło do aplikacji" v-model="authForm.password" />
+    <InputField label="Login" iconName="UserIcon" inputType="email" inputPlaceholder="E-mail" v-model="authForm.email" :class="{ 'error': hasError }" />
+    <InputField label="Hasło" iconName="LockIcon" inputType="password" inputPlaceholder="Hasło do aplikacji" v-model="authForm.password" :class="{ 'error': hasError }" />
 
     <div class="additionalLoginOptions">
       <label for="rememberPass" class="rememberPassLabel font92">
-        <input type="checkbox" id="rememberPass">Zapamiętaj hasło
+        <input type="checkbox" id="rememberPass">
+        Zapamiętaj hasło
       </label>
 
       <RouterLink to="/forgot-password" class="link font92">Resetuj hasło</RouterLink>
