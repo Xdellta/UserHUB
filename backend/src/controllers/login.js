@@ -1,10 +1,13 @@
 const db = require('../config.js');
 
-exports.login = (req, res) => {
-  // Logika logowania z użyciem bazy danych
-  // Przykładowa logika:
-  const { username, password } = req.body;
-  // ... wykonaj autentykację ...
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
 
-  res.json({ success: true, message: 'Zalogowano pomyślnie' });
+  try {
+    // logika autoryzacji i wydanie tokenu
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Odmowa dostępu' });
+  }
 };

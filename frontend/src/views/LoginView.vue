@@ -9,24 +9,27 @@
 
   const router = useRouter();
 
+  // Obsługa logowania
   const authForm = ref({
     email: '',
     password: ''
   });
 
-  // Login system
-  const login = async () => {
+  async function login() {
     try {
-      const response = await axios.post('/login', authForm);
-      const { token } = response.data;
+      const response = await axios.post('/auth/login', authForm.value);
 
-      axios.defaults.headers.common['Authorization'] = `${token}`;
+      if (response.status === 200) {
+        const { token } = response.data;
+        // axios.defaults.headers.common['Authorization'] = `${token}`;
+      }
 
       router.push('/');
+      
     } catch (error) {
-      console.log('Błąd logowania - frontend')
+      console.error('Błąd logowania: ', error);
     }
-  };
+  }
 </script>
 
 <template>

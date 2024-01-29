@@ -8,14 +8,14 @@
   const icons: Record<string, any> = { UserIcon, LockIcon, ShowIcon };
 
   const emit = defineEmits();
-  const updateModelValue = (event: Event) => emit('update:modelValue', (event.target as HTMLInputElement).value);
+  const updateInputValue = (event: Event) => emit('update:modelValue', (event.target as HTMLInputElement).value);
 </script>
 
 <template>
   <label :for="inputType">
     {{ label }}
     <component :is="icons[iconName]" class="icon" />
-    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" @input="updateModelValue">
+    <input :type="inputType" :name="inputType" :placeholder="inputPlaceholder" :value="modelValue" @input="updateInputValue">
   </label>
 </template>
 

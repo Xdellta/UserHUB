@@ -1,14 +1,17 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const cors = require('cors');
 
-// Importowanie tras do obsługi logowania
+// Importowanie tras do obsługi autoryzacji
 const authRoutes = require('./src/routes/auth');
 
 // Parsowanie JSON-a
 app.use(express.json());
 
-// Dodanie tras do obsługi logowania
+app.use(cors());
+
+// Dodanie tras do obsługi autoryzacji
 app.use('/auth', authRoutes);
 
 // Nasłuchiwanie na określonym porcie
