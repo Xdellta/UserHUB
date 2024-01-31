@@ -19,7 +19,7 @@
 
   async function login() {
     try {
-      const response = await axios.post('/auth/login', authForm.value);
+      const response = await axios.post('/login', authForm.value);
 
       if (response.status === 200) {
         const { token } = response.data;

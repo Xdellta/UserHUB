@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user.model.js');
-const generateJWT = require('../utils/generateJWT.js');
+const User = require('../models/user.model');
+const sessionGenerate = require('../utils/sessionGenerate');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -25,8 +25,13 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
 
-    // Wygeneruj token JWT i zwróć
-    const token = generateJWT(email);
+    // Generowanie sesji i zwracanie tokenu JWT
+    const token = await sessionGenerate(user.user_id, email, user.role);
+
+    if (token === null) {
+      return res.status(500).json({ message: 'Błąd generowania tokenu' });
+    }
+
     return res.status(200).json({ token });
 
   } catch (error) {
