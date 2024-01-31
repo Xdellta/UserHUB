@@ -8,10 +8,10 @@ async function sessionGenerate(userId, email, role) {
       return null;
     }
 
-    // Generowanie tokenu JWT
+    // Generating a JWT token
     const token = jwt.sign({ email, role }, sessionConfig.jwtSecretKey, { expiresIn: sessionConfig.duration });
 
-    // Zapis sesji do bazy danych
+    // Saving the session to the database
     await Session.create({
       user_id: userId,
       jwt_token: token,

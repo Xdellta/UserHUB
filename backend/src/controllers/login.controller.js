@@ -1,31 +1,41 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const sessionGenerate = require('../utils/sessionGenerate');
+const { passwordValid, emailValid } = require('../utils/inputDataValid');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Sprawdź, czy istnieje użytkownik o podanym adresie e-mail
+    // Input data validation
+    if ( emailValid(email) === false ) {
+      return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
+    }
+
+    if ( passwordValid(password) === false ) {
+      return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
+    }
+
+    // Check if the user with the provided email address exists
     const user = await User.findOne({
       where: {
         email: email
       },
     });
 
-    // Jeśli użytkownik nie istnieje, zwróć błąd
+    // If the user does not exist, return an error
     if (!user) {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
 
-    // Sprawdź poprawność hasła
+    // Check the correctness of the password
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
 
-    // Generowanie sesji i zwracanie tokenu JWT
+    // Generating a session and returning a JWT
     const token = await sessionGenerate(user.user_id, email, user.role);
 
     if (token === null) {

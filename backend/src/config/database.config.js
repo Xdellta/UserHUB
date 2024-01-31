@@ -9,7 +9,7 @@ const db = new Sequelize({
   database: process.env.DB_DATABASE || 'userhub',
 });
 
-// Sprawdzenie połączenia z bazą danych
+// Checking the connection to the database
 const checkDatabaseConnection = async () => {
   try {
     await db.authenticate();

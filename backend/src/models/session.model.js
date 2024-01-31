@@ -30,7 +30,7 @@ const Session = db.define('sessions', {
   timestamps: false,
 });
 
-// Dodanie klucza obcego do relacji z tabelą users
+// Adding a foreign key to the relationship with the users table
 Session.belongsTo(db.models.users, {
   foreignKey: 'user_id',
 });
