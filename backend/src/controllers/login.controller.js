@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const sessionGenerate = require('../utils/sessionGenerate');
-const { passwordValid, emailValid } = require('../utils/inputDataValid');
+const { passwordValid, emailValid } = require('../utils/inputValidator');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
