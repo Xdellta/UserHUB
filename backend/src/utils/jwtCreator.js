@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/jwt.config');
 
 // Creating jwt tokens
-async function jwtGenerator(email, role) {
+async function jwtCreator(email, role) {
   try {
     if (!email || !role) {
       return null;
@@ -15,4 +15,4 @@ async function jwtGenerator(email, role) {
   }
 }
 
-module.exports = jwtGenerator;
+module.exports = jwtCreator;

@@ -1,18 +1,19 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
-const jwtGenerator= require('../middleware/jwt.middleware');
 const { passwordValid, emailValid } = require('../utils/inputValidator');
+const jwtCreator = require('../utils/jwtCreator');
+const logger = require('../utils/logger');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     // Input data validation
-    if ( emailValid(email) === false ) {
+    if (!emailValid(email)) {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
 
-    if ( passwordValid(password) === false ) {
+    if (!passwordValid(password)) {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
 
@@ -23,7 +24,6 @@ exports.login = async (req, res) => {
       },
     });
 
-    // If the user does not exist, return an error
     if (!user) {
       return res.status(401).json({ message: 'Nieprawidłowy e-mail lub hasło' });
     }
@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
     }
 
     // Creating a session and returning a JWT
-    const token = await jwtGenerator(email, user.role);
+    const token = await jwtCreator(email, user.role);
 
     if (token === null) {
       return res.status(500).json({ message: 'Błąd generowania tokenu' });
