@@ -1,30 +1,38 @@
 const jwt = require('jsonwebtoken');
+const jwtConfig = require('../config/jwt.config');
 
 // Authorization middleware for endpoint access based on JWT
-async function authorization(requiredRoles) {
-  return async (req, res) => {
-    try {
-      // Check if the user has a token
-      const token = req.header('Authorization');
+const authorization = (requiredRoles) => async (req, res, next) => {
+  const accessToken = req.cookies['accessToken'];
+  const refreshToken = req.cookies['refreshToken'];
 
-      if (!token) {
-        return res.status(401).json({ message: 'Missing authorization token. Access denied.' });
-      }
+  try {
+    if (!accessToken) throw new Error('No access token');
 
-      // JWT token verification
-      const decodedToken = jwt.verify(token, sessionConfig.jwtSecretKey);
+    const decodedToken = jwt.verify(accessToken, jwtConfig.secret);
+    if (!decodedToken) throw new Error('Incorrect access token verification');
 
-      // Check if the user has one of the required roles
-      const hasRequiredRole = requiredRoles.some(role => decodedToken.roles.includes(role));
-
-      if (!hasRequiredRole) {
-        return res.status(403).json({ message: 'Insufficient privileges. Access denied.' });
-      }
-
-    } catch (error) {
-      return res.status(401).json({ message: 'Token verification error. Access denied.' });
+    // Zaimplementować jeszcze funkcję do wylogowania          !!!!     !!!!!!
+    if (!decodedToken.email || !decodedToken.role)  { 
+      return res.status(403).json({ error: 'Access denied. Insufficient permissions' });
     }
-  };
+
+    const hasRequiredRole = requiredRoles.some(role => decodedToken.role.includes(role));
+    if (!hasRequiredRole) return res.status(403).json({ error: 'Access denied. Insufficient permissions' });
+
+    next();
+
+  } catch(errorAccessToken) {
+    // Refresh token logic
+    try {
+      if (!refreshToken) throw new Error('No refresh token');
+
+      next();
+
+    } catch(errorRefreshToken) {
+      return res.status(403).json({ errorAccessToken, errorRefreshToken, });
+    }
+  }
 }
 
 module.exports = authorization;
