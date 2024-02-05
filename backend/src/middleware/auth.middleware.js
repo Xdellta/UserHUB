@@ -9,12 +9,11 @@ const authorization = (requiredRoles) => async (req, res, next) => {
   try {
     if (!accessToken) throw new Error('No access token');
 
-    const decodedToken = jwt.verify(accessToken, jwtConfig.secret);
+    const decodedToken = jwt.verify(accessToken, jwtConfig.jwtSecretKey);
     if (!decodedToken) throw new Error('Incorrect access token verification');
 
-    // Zaimplementować jeszcze funkcję do wylogowania          !!!!     !!!!!!
-    if (!decodedToken.email || !decodedToken.role)  { 
-      return res.status(403).json({ error: 'Access denied. Insufficient permissions' });
+    if (!decodedToken.userId || !decodedToken.email || !decodedToken.role)  { 
+      return res.status(403).redirect('/logout');
     }
 
     const hasRequiredRole = requiredRoles.some(role => decodedToken.role.includes(role));
