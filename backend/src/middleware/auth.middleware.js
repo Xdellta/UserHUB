@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const jwtConfig = require('../config/jwt.config');
+const { accessTokenConfig, refreshTokenConfig } = require('../config/jwt.config');
 
 // Authorization middleware for endpoint access based on JWT
 const authorization = (requiredRoles) => async (req, res, next) => {
@@ -9,10 +9,10 @@ const authorization = (requiredRoles) => async (req, res, next) => {
   try {
     if (!accessToken) throw new Error('No access token');
 
-    const decodedToken = jwt.verify(accessToken, jwtConfig.jwtSecretKey);
+    const decodedToken = jwt.verify(accessToken, accessTokenConfig.secretKey);
     if (!decodedToken) throw new Error('Incorrect access token verification');
 
-    if (!decodedToken.userId || !decodedToken.email || !decodedToken.role)  { 
+    if (!decodedToken.userId || !decodedToken.role)  { 
       return res.status(403).redirect('/logout');
     }
 

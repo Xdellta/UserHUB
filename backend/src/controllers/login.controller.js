@@ -8,11 +8,7 @@ exports.login = async (req, res) => {
 
   try {
     // Input data validation
-    if (!emailValid(email)) {
-      return res.status(401).json({ message: 'Incorrect email or password' });
-    }
-
-    if (!passwordValid(password)) {
+    if (!emailValid(email) || !passwordValid(password)) {
       return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
@@ -34,14 +30,14 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Incorrect email or password' });
     }
 
-    // Creating a session and returning a JWT
-    const token = await jwtCreator(email, user.role);
+    // Creating and sending tokens
+    const tokenResult = await generateAndSendToken(user.user_id, user.role, res);
 
-    if (token === null) {
-      return res.status(500).json({ message: 'JWT generation error' });
+    if (!tokenResult.success) {
+      return res.status(500).json({ message: tokenResult.message });
     }
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ message: 'Login successful' });
 
   } catch (error) {
     return res.status(500).json({ message: `Server error` });

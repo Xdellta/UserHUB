@@ -1,8 +1,16 @@
 require('dotenv').config();
 
-const sessionConfig = {
-  jwtSecretKey: process.env.JWT_KEY || 'jwtSecretKey',
-  duration: '1h'
+const accessTokenConfig = {
+  secretKey: process.env.ACCESS_TOKEN_KEY || 'accessTokenSecretKey',
+  duration: '10m'
 };
 
-module.exports = sessionConfig;
+const refreshTokenConfig = {
+  secretKey: process.env.REFRESH_TOKEN_KEY || 'refreshTokenSecretKey',
+  duration: '1d'
+};
+
+module.exports = {
+  accessTokenConfig,
+  refreshTokenConfig
+};
