@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { accessTokenConfig, refreshTokenConfig } = require('../config/jwt.config');
 
-async function generateAndSendToken(userId, role, res) {
+// Creating and sending tokens to the client
+async function jwtCreator(userId, role, res) {
   try {
     if (!userId || !role) {
       throw new Error('Invalid input');
@@ -20,4 +21,4 @@ async function generateAndSendToken(userId, role, res) {
   }
 }
 
-module.exports = generateAndSendToken;
+module.exports = jwtCreator;

@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
     }
 
     // Creating and sending tokens
-    const tokenResult = await generateAndSendToken(user.user_id, user.role, res);
+    const tokenResult = await jwtCreator(user.user_id, user.role, res);
 
     if (!tokenResult.success) {
       return res.status(500).json({ message: tokenResult.message });
