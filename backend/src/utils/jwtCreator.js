@@ -8,10 +8,10 @@ async function jwtCreator(userId, role, res) {
       throw new Error('Invalid input');
     }
 
-    const accesToken = jwt.sign({userId, role }, accessTokenConfig.secretKey, { expiresIn: accessTokenConfig.duration });
+    const accessToken = jwt.sign({userId, role }, accessTokenConfig.secretKey, { expiresIn: accessTokenConfig.duration });
     const refreshToken = jwt.sign({userId, role }, refreshTokenConfig.secretKey, { expiresIn: refreshTokenConfig.duration });
 
-    res.cookie('accessToken', accesToken, { httpOnly: true });
+    res.cookie('accessToken', accessToken, { httpOnly: true });
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
     return { success: true, message: 'Token generation successful' };

@@ -4,9 +4,9 @@ const { passwordValid, emailValid } = require('../utils/inputValidator');
 const jwtCreator = require('../utils/jwtCreator');
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     // Input data validation
     if (!emailValid(email) || !passwordValid(password)) {
       return res.status(401).json({ message: 'Incorrect email or password' });
@@ -36,6 +36,8 @@ exports.login = async (req, res) => {
     if (!tokenResult.success) {
       return res.status(500).json({ message: tokenResult.message });
     }
+
+    console.log(`Zawiera: ${req.cookies.accessToken}`);
 
     return res.status(200).json({ message: 'Login successful' });
 

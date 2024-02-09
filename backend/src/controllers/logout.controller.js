@@ -3,10 +3,10 @@ const jwtConfig = require('../config/jwt.config');
 const JWTblacklist = require('../models/jwtBlacklist.model');
 
 exports.logout = async (req, res) => {
-  const accessToken = req.cookies['accessToken'];
-  const refreshToken = req.cookies['refreshToken'];
-
   try {
+    const accessToken = req.cookies['accessToken'];
+    const refreshToken = req.cookies['refreshToken'];
+
     if (accessToken) {
       res.clearCookie('accessToken');
     }
