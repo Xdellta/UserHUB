@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const accessTokenConfig = {
   secretKey: process.env.ACCESS_TOKEN_KEY || 'accessTokenSecretKey',
   duration: '10m'

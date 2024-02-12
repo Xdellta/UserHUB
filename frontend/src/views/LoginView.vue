@@ -21,9 +21,8 @@
     try {
       const response = await axios.post('/login', authForm.value);
 
-      if (response.status === 200) {
-        const { token } = response.data;
-        axios.defaults.headers.common['Authorization'] = `${token}`;
+      if (response.status != 200) {
+        throw new Error('Invalid status code');
       }
 
       router.push('/');

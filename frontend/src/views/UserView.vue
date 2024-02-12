@@ -3,8 +3,11 @@
 
   const logout = async () => {
     try {
-      await axios.post('/logout');
-      console.log('Pomyślnie wylogowano użytkownika');
+      const response = await axios.post('/logout');
+      
+      if (response.status === 200) {
+        window.location.href = '/login';
+      }
 
     } catch (error) {
       console.error('Błąd podczas wylogowywania:', error);

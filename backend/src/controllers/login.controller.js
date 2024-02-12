@@ -37,8 +37,6 @@ exports.login = async (req, res) => {
       return res.status(500).json({ message: tokenResult.message });
     }
 
-    console.log(`Zawiera: ${req.cookies.accessToken}`);
-
     return res.status(200).json({ message: 'Login successful' });
 
   } catch (error) {
