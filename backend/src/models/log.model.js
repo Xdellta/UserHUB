@@ -11,7 +11,7 @@ const Log = db.define('logs', {
   },
   user_id: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
     references: {
       model: User,
       key: 'user_id',
@@ -23,15 +23,15 @@ const Log = db.define('logs', {
   },
   device: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   client_ip: {
     type: DataTypes.STRING(45),
-    allowNull: true,
+    allowNull: false,
   },
   created_at: {
     type: DataTypes.DATE,
-    allowNull: true,
+    allowNull: false,
     defaultValue: DataTypes.NOW,
   },
 },

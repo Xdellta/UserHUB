@@ -13,11 +13,11 @@ exports.logout = async (req, res) => {
 
       const decodedRT = jwt.verify(refreshToken, refreshTokenConfig.secretKey);
 
-      // await JWTblacklist.create({
-      //   user_id: decodedRT.userId,
-      //   jwt: refreshToken,
-      //   create_at: new Date()
-      // });
+      await JWTblacklist.create({
+        user_id: decodedRT.userId,
+        refresh_jwt: refreshToken,
+        create_at: new Date()
+      });
 
     } else {
       return res.status(400).json({ error: 'Logout unsuccessful' });
