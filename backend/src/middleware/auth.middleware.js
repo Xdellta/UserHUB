@@ -1,24 +1,25 @@
 const jwt = require('jsonwebtoken');
+const JWTblacklist = require('../models/jwtBlacklist.model');
 const { accessTokenConfig, refreshTokenConfig } = require('../config/jwt.config');
 
 // Authorization middleware for endpoint access based on JWT
-const authorization = (requiredRoles) => async (req, res, next) => {
-  const accessToken = req.cookies['accessToken'];
-  const refreshToken = req.cookies['refreshToken'];
+exports.authorization = async (requiredRoles, req, res, next) => {
+  const { accessToken, refreshToken } = req.cookies;
 
   try {
     if (!accessToken) throw new Error('No access token');
 
-    const decodedToken = jwt.verify(accessToken, accessTokenConfig.secretKey);
-    if (!decodedToken) throw new Error('Incorrect access token verification');
+    const decodedAT = jwt.verify(accessToken, accessTokenConfig.secretKey);
+    if (!decodedAT) throw new Error('Incorrect access token verification');
 
-    if (!decodedToken.userId || !decodedToken.role)  { 
-      return res.status(403).redirect('/logout');
+    if (!decodedAT.userId || !decodedAT.role)  { 
+      return res.status(401).json({ error: 'Access denied. Invalid access token' });
     }
 
-    const hasRequiredRole = requiredRoles.some(role => decodedToken.role.includes(role));
+    const hasRequiredRole = requiredRoles.some(role => decodedAT.role.includes(role));
     if (!hasRequiredRole) return res.status(403).json({ error: 'Access denied. Insufficient permissions' });
 
+    req.userId = decodedAT.userId;
     next();
 
   } catch(errorAccessToken) {
@@ -26,12 +27,21 @@ const authorization = (requiredRoles) => async (req, res, next) => {
     try {
       if (!refreshToken) throw new Error('No refresh token');
 
+      const decodedRT = jwt.verify(refreshToken, refreshTokenConfig.secretKey);
+      if (!decodedRT) throw new Error('Incorrect refresh token verification');
+
+      if (!decodedRT.userId || !decodedRT.role)  { 
+        return res.status(401).json({ error: 'Access denied. Invalid refresh token' });
+      }
+
+      const accessToken = jwt.sign({userId: decodedRT.userId, role: decodedRT.role }, accessTokenConfig.secretKey, { expiresIn: accessTokenConfig.duration });
+      res.cookie('accessToken', accessToken, { httpOnly: true });
+
+      req.userId = decodedRT.userId;
       next();
 
     } catch(errorRefreshToken) {
-      return res.status(403).json({ errorAccessToken, errorRefreshToken, });
+      return res.status(401).json({ error: "" });
     }
   }
 }
-
-module.exports = authorization;

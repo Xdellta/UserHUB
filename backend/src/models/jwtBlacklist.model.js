@@ -21,7 +21,7 @@ const JWTblacklist = db.define('jwt_blacklist', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  create_at: {
+  created_at: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,

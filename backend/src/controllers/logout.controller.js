@@ -16,16 +16,16 @@ exports.logout = async (req, res) => {
       await JWTblacklist.create({
         user_id: decodedRT.userId,
         refresh_jwt: refreshToken,
-        create_at: new Date()
+        created_at: new Date()
       });
 
     } else {
-      return res.status(400).json({ error: 'Logout unsuccessful' });
+      return res.status(400).json({ error: 'Logout failed: Insufficient input' });
     }
 
     return res.status(200).json({ message: 'Logout successful' });  
 
   } catch(error) {
-    return res.status(401).json({ error: 'Unauthorized: User session expired or not authenticated' });
+    return res.status(401).json({ error: 'Logout failed: User session expired or not authenticated' });
   }
 };
