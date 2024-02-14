@@ -1,11 +1,10 @@
 # UserHUB
-The project is educational in nature. UserHUB is a web application that supports the user's basic system based on frontend and backend.
+The project is educational in nature. UserHUB is a web application that hosts the core user system based on the JWT token system.
 
 ### Supported functions
 * Login system
 * Logout system
-* Session system
-* Password recovery
+* JWT system
 
 ### Frontend
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) 
